@@ -386,7 +386,7 @@
               checkedAt: row.checked_at || row.updated_at
             };
           }
-          if (row.status === 'submitted') {
+          if (row.status === 'submitted' || row.status === 'submitted_pending_report') {
             homework.submissions[row.lesson_id] = { savedAt: row.submitted_at || row.updated_at, status: 'cloud' };
             // A homework assignment is counted as complete after it is submitted,
             // even if some answers are incorrect.
@@ -457,13 +457,15 @@
             student_name: safeText(student.nameEn || student.nameRu),
             lesson_id: lessonId,
             lesson_title: [safeText(lesson.title, lessonId), safeText(lesson.subtitle)].filter(Boolean).join(' — '),
-            status: submission ? 'submitted' : 'checked',
+            status: submission ? (['report-sent', 'cloud'].includes(submission.status) ? 'submitted' : 'submitted_pending_report') : 'draft',
             answers: result.answers && typeof result.answers === 'object' ? result.answers : {},
             score_correct: total > 0 ? correct : null,
             score_total: total > 0 ? total : null,
             score_percent: total > 0 ? safePercent(correct, total) : null,
             checked_at: result.checkedAt || null,
-            submitted_at: submission?.savedAt || null
+            submitted_at: submission?.savedAt || null,
+            locked_at: submission?.savedAt || null,
+            report_status: submission ? (['report-sent', 'cloud'].includes(submission.status) ? 'sent' : 'pending') : 'not_sent'
           };
         });
         if (rows.length) {
@@ -2400,7 +2402,7 @@
       ${linkedMaterials}
       ${roadmap}
       <div id="lesson-blocks">${renderedBlocks}</div>
-      <div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и синхронизируются с облаком.</p></div>`;
+      <div class="card section lesson-actions"><div id="lesson-result" aria-live="polite"></div><div class="button-row"><button class="btn btn-primary" id="check-lesson" type="button">Проверить ответы</button><button class="btn btn-secondary" id="submit-lesson" type="button" ${savedResult && !['report-sent', 'cloud'].includes(progress.submissions[lesson.id]?.status) ? '' : 'disabled'}>Отправить преподавателю</button></div><p class="muted save-note">После проверки ответы сохраняются на устройстве и синхронизируются с облаком.</p></div>`;
 
     restoreLessonAnswers(root, blocks, savedResult?.answers);
     wireLessonInteractiveInputs(root);
@@ -2476,6 +2478,12 @@
       const result = updatedProgress.results[lesson.id];
       if (!result || Number(result.total || 0) <= 0) {
         showToast('Сначала проверь ответы, затем отправь домашнюю работу.');
+        return;
+      }
+
+const alreadyReported = ['report-sent', 'cloud'].includes(updatedProgress.submissions[lesson.id]?.status);
+      if (alreadyReported) {
+        showToast('Эта работа уже отправлена преподавателю.');
         return;
       }
 
