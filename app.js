@@ -1663,7 +1663,7 @@
       const inputType = item.input === 'multiple' ? 'checkbox' : 'radio';
       control = `<div class="option-list compact-options">${(item.options || []).map((option, optionIndex) => `<label class="option"><input type="${inputType}" name="${escapeHtml(inputId)}" value="${optionIndex}"><span>${escapeHtml(option)}</span></label>`).join('')}</div>`;
     } else if (item.input === 'select') {
-      const selectControl = `<select id="${escapeHtml(inputId)}"><option value="">Выбери ответ</option>${(item.options || []).map((option, optionIndex) => `<option value="${optionIndex}">${escapeHtml(option)}</option>`).join('')}</select>`;
+      const selectControl = `<select id="${escapeHtml(inputId)}"><option value="">Выбери ответ</option>${(item.options || []).map((option, optionIndex) => `<option value="${escapeHtml(Array.isArray(item.optionValues) ? item.optionValues[optionIndex] : optionIndex)}">${escapeHtml(option)}</option>`).join('')}</select>`;
       const segments = Array.isArray(item.segments) ? item.segments : [];
       control = segments.length >= 2
         ? `<div class="sentence-gaps sentence-select-gap" aria-label="${prompt}"><span>${escapeHtml(segments[0] || '')}</span>${selectControl}<span>${escapeHtml(segments[1] || '')}</span></div>`
@@ -1800,6 +1800,31 @@
     </div>`;
   }
 
+  // A1 workbook layouts: keep the original photos, columns, diary and dialogue structure.
+  function renderA1WorkbookLayout(block, blockId) {
+    const items = Array.isArray(block.items) ? block.items : [];
+    const esc = escapeHtml;
+    if (block.layout === 'number-table') {
+      const rows = [{ left: '1', right: 'one', example: true }, ...items.map((item) => ({ item }))];
+      return `<div class="a1-number-table" role="table" aria-label="Number and word">${rows.map((row) => {
+        if (row.example) return `<div class="a1-number-row a1-number-example" role="row"><span role="cell">1</span><span role="cell">one</span></div>`;
+        const item = row.item, id = esc(item.id);
+        const field = `<input class="text-field a1-short-field" aria-label="${esc(item.number)}" autocomplete="off">`;
+        const left = item.side === 'left' ? field : esc(item.left);
+        const right = item.side === 'right' ? field : esc(item.right);
+        return `<div class="a1-number-row exercise-item" role="row" data-exercise-item="${id}" data-input-type="text"><span role="cell">${left}</span><span role="cell">${right}</span><span class="feedback" aria-live="polite"></span></div>`;
+      }).join('')}</div>`;
+    }
+    if (block.layout === 'diary-table') {
+      const all = [{ number: 1, word: 'Monday' }, ...items.map((item) => ({ number: item.number, item })), { number: 7, word: 'Sunday' }];
+      return `<div class="a1-diary" role="table" aria-label="Weekly diary"><div class="a1-diary-bar" aria-hidden="true"><span>••••• ◈</span><span>100% ▣</span></div>${all.map((row) => {
+        if (row.word) return `<div class="a1-diary-row is-fixed" role="row"><span role="cell">${row.number}</span><span role="cell">${esc(row.word)}</span></div>`;
+        return `<div class="a1-diary-row exercise-item" role="row" data-exercise-item="${esc(row.item.id)}" data-input-type="text"><span role="cell">${row.number}</span><span role="cell"><input class="text-field a1-diary-field" aria-label="Day ${row.number}" autocomplete="off"></span><span class="feedback" aria-live="polite"></span></div>`;
+      }).join('')}</div>`;
+    }
+    return null;
+  }
+
   function renderDialogueExercise(block, blockId) {
     const items = Array.isArray(block.items) ? block.items : [];
     const itemMap = new Map(items.map((item, index) => [safeText(item.id, `${index + 1}`), { item, index }]));
@@ -1810,6 +1835,7 @@
     }
 
     return `<div class="dialogue-exercise" role="group" aria-label="Conversation exercise">${lines.map((line) => {
+      if (line.heading) return `<h4 class="a1-conversation-heading">${escapeHtml(line.heading)}</h4>`;
       const speaker = escapeHtml(line.speaker || '');
       const text = line.text ? `<span class="dialogue-plain-text">${escapeHtml(line.text)}</span>` : '';
       const lineItems = (Array.isArray(line.itemIds) ? line.itemIds : []).map((itemId) => {
@@ -1872,7 +1898,8 @@
           }).join('')}</div>`
         : '';
       const intro = block.introTitle || block.introText ? `<div class="exercise-source"><h4>${escapeHtml(block.introTitle || '')}</h4>${block.introText ? `<p>${escapeHtml(block.introText)}</p>` : ''}</div>` : '';
-      const exerciseContent = block.layout === 'dialogue'
+      const customA1Layout = renderA1WorkbookLayout(block, id);
+      const exerciseContent = customA1Layout !== null ? customA1Layout : block.layout === 'dialogue'
         ? renderDialogueExercise(block, id)
         : block.layout === 'crossword'
           ? renderCrosswordExercise(block, id)
@@ -2038,7 +2065,7 @@
         itemNode.classList.add('is-saved');
         if (feedback) {
           feedback.className = 'feedback show neutral';
-          feedback.textContent = 'Your answer has been saved for the teacher.';
+          feedback.textContent = 'Ответ сохранён для преподавателя.';
         }
         return;
       }
@@ -2052,10 +2079,10 @@
         feedback.className = `feedback show ${result.correct ? 'good' : 'bad'}`;
         const hideAnswerOnError = options.hideAnswersOnError === true || block.hideAnswersOnError === true || item.hideAnswersOnError === true;
         feedback.textContent = result.correct
-          ? 'Correct!'
+          ? 'Верно!'
           : hideAnswerOnError
-            ? 'Incorrect. Check your answer and try again.'
-            : safeText(item.explanation, 'Check the answer and try again.');
+            ? 'Есть ошибка. Проверь ответ и попробуй ещё раз.'
+            : safeText(item.explanation, 'Проверь ответ и попробуй ещё раз.');
       }
     });
 
@@ -2262,7 +2289,7 @@
           const isCorrect = Number(result.correctCount || 0) === Number(result.total || 0);
           if (feedback) {
             feedback.className = `feedback show ${isCorrect ? 'good' : 'bad'}`;
-            feedback.textContent = isCorrect ? 'Correct!' : safeText(block.explanation, 'Check the answer and try again.');
+            feedback.textContent = isCorrect ? 'Верно!' : safeText(block.explanation, 'Проверь ответ и попробуй ещё раз.');
           }
         }
       });
@@ -2278,8 +2305,8 @@
 
     byId('check-lesson').addEventListener('click', () => {
       const result = evaluateLesson();
-      const manualNote = hasManualResponses ? ' · the extended answer is saved separately and is not included in the score' : '';
-      byId('lesson-result').innerHTML = `<h3>Score: ${result.correct} из ${result.total}</h3><p class="muted">${result.percent}% correct${manualNote}</p>`;
+      const manualNote = hasManualResponses ? ' · ответы без аудиозаписи сохраняются без оценки' : '';
+      byId('lesson-result').innerHTML = `<h3>Результат: ${result.correct} из ${result.total}</h3><p class="muted">${result.percent}% правильных ответов${manualNote}</p>`;
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       updatedProgress.results[lesson.id] = {
         correct: result.correct,
@@ -2297,7 +2324,7 @@
       const updatedProgress = window.ProgressService.loadHomeworkProgress();
       const result = updatedProgress.results[lesson.id];
       if (!result || Number(result.total || 0) <= 0) {
-        showToast('Check the answers before submitting the homework.');
+        showToast('Сначала проверь ответы, затем отправь домашнюю работу.');
         return;
       }
 
@@ -2325,16 +2352,16 @@
             status: report?.skipped ? 'cloud' : 'report-sent'
           };
           window.ProgressService.saveHomeworkProgress(latest);
-          showToast(report?.skipped ? 'Homework saved in Supabase.' : 'Homework submitted. The teacher received the Telegram report.');
+          showToast(report?.skipped ? 'Ответы сохранены в облаке.' : 'Домашняя работа отправлена преподавателю.');
         } else {
-          showToast('Homework saved on this device. Supabase is not configured.');
+          showToast('Ответы сохранены на устройстве. Облачная синхронизация недоступна.');
         }
       } catch (error) {
         console.error('Homework submission/report error:', error);
         const latest = window.ProgressService.loadHomeworkProgress();
         latest.submissions[lesson.id] = { savedAt: submittedAt, status: 'report-failed' };
         window.ProgressService.saveHomeworkProgress(latest);
-        showToast(`Homework saved, but the Telegram report was not sent: ${safeText(error?.message, 'unknown error')}`);
+        showToast(`Ответы сохранены, но Telegram-отчёт не отправлен: ${safeText(error?.message, 'unknown error')}`);
       } finally {
         button.disabled = false;
         button.textContent = originalText;
@@ -2527,10 +2554,10 @@
     let testState = null;
 
     root.innerHTML = `<div class="mode-tabs" id="vocab-modes" aria-label="Practice mode">
-      <button class="mode-btn active" type="button" data-mode="cards">New words</button>
+      <button class="mode-btn active" type="button" data-mode="cards">Новые слова</button>
       <button class="mode-btn" type="button" data-mode="test">Test</button>
-      <button class="mode-btn" type="button" data-mode="all">All words</button>
-      <button class="mode-btn" type="button" data-mode="difficult">Difficult words</button>
+      <button class="mode-btn" type="button" data-mode="all">Все слова</button>
+      <button class="mode-btn" type="button" data-mode="difficult">Сложные слова</button>
     </div><div id="vocab-mode-root" class="section"></div>`;
     const modeRoot = byId('vocab-mode-root');
 
@@ -2607,7 +2634,7 @@
       const distractors = shuffled(topic.words.filter((item) => item.__wordKey !== word.__wordKey)).slice(0, 3);
       const options = shuffled([word, ...distractors]);
       testState.answered = false;
-      modeRoot.innerHTML = `<div class="flash-counter">Question ${testState.index + 1} of ${testState.words.length}</div><article class="card"><span class="eyebrow">Choose the translation</span><h2 class="flash-word">${escapeHtml(word.en)}</h2>${word.transcription ? `<p class="muted">${escapeHtml(word.transcription)}</p>` : ''}<div class="option-list section">${options.map((option) => `<button class="quiz-option" type="button" data-answer-key="${escapeHtml(option.__wordKey)}">${escapeHtml(option.ru)}</button>`).join('')}</div><div id="vocab-test-feedback" class="feedback"></div><div class="button-row"><button class="btn btn-primary" id="next-vocab-question" type="button" disabled>Next word</button></div></article>`;
+      modeRoot.innerHTML = `<div class="flash-counter">Question ${testState.index + 1} of ${testState.words.length}</div><article class="card"><span class="eyebrow">Choose the translation</span><h2 class="flash-word">${escapeHtml(word.en)}</h2>${word.transcription ? `<p class="muted">${escapeHtml(word.transcription)}</p>` : ''}<div class="option-list section">${options.map((option) => `<button class="quiz-option" type="button" data-answer-key="${escapeHtml(option.__wordKey)}">${escapeHtml(option.ru)}</button>`).join('')}</div><div id="vocab-test-feedback" class="feedback"></div><div class="button-row"><button class="btn btn-primary" id="next-vocab-question" type="button" disabled>Следующее слово</button></div></article>`;
       modeRoot.querySelectorAll('[data-answer-key]').forEach((button) => {
         button.addEventListener('click', () => {
           if (testState.answered) return;

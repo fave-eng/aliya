@@ -115,6 +115,7 @@
             const exercise = root.querySelector(`[data-task="${esc(block.id)}"]`);
             if (!exercise) continue;
             if (block.layout === 'media-list') exercise.classList.add('exercise-layout-media-list');
+            if (block.layout === 'photo-match') exercise.classList.add('exercise-layout-photo-match');
 
             for (const item of block.items) {
               if (!item?.id || !item.image) continue;
@@ -128,7 +129,17 @@
               image.alt = item.imageAlt || '';
               image.loading = 'lazy';
               image.decoding = 'async';
-              figure.appendChild(image);
+              if (block.layout === 'photo-match') {
+                const full = document.createElement('a');
+                full.href = item.image;
+                full.target = '_blank';
+                full.rel = 'noopener';
+                full.title = 'Увеличить оригинальную фотографию';
+                full.appendChild(image);
+                figure.appendChild(full);
+              } else {
+                figure.appendChild(image);
+              }
               node.insertBefore(figure, node.firstChild);
               node.classList.add('has-item-media');
               node.dataset.mediaEnhanced = 'true';
@@ -139,7 +150,73 @@
         }
       };
 
-      new MutationObserver(applyImages).observe(root, { childList: true, subtree: true });
+
+      const applyDependencies = () => {
+        if (!lesson) return;
+        const exerciseById = (id) => root.querySelector(`[data-task="${esc(id)}"]`);
+        const complete = (node) => node && [...node.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]), select')]
+          .every((field) => String(field.value).trim().length > 0);
+        const sourceFor = (id) => {
+          const block = (lesson.blocks || []).find((b) => b.id === id);
+          const node = exerciseById(id);
+          if (!block || !node) return [];
+          return (block.items || []).map((item) => {
+            const entry = node.querySelector(`[data-exercise-item="${esc(item.id)}"]`);
+            if (!entry) return '';
+            if (id === 'wb-1a') {
+              const parts = item.segments || [];
+              const values = [...entry.querySelectorAll('[data-gap-index]')].map((field) => field.value);
+              return `${item.number}. ${parts.map((p,i) => p + (values[i] || '')).join('')}`;
+            }
+            if (id === 'wb-3a') return `${item.number}. ${entry.querySelector('input')?.value || ''}`;
+            if (id === 'wb-4a') {
+              const value = entry.querySelector('select')?.value;
+              const opt = item.options?.[Number(value)] || '';
+              return `${item.number}. ${item.prompt} ${opt.replace(/^[a-f]\s+/, '')}`;
+            }
+            return '';
+          });
+        };
+        for (const block of lesson.blocks || []) {
+          if (!block.dependsOn) continue;
+          const target = exerciseById(block.id);
+          const previous = exerciseById(block.dependsOn);
+          if (!target || !previous) continue;
+          let ref = target.querySelector('.a1-prior-answers');
+          if (!ref) {
+            ref = document.createElement('div');
+            ref.className = 'a1-prior-answers';
+            const anchor = target.querySelector('.exercise-heading');
+            anchor?.insertAdjacentElement('afterend', ref);
+          }
+          const ready = complete(previous);
+          target.querySelectorAll('input, select, textarea').forEach((field) => { field.disabled = !ready; });
+          if (!ready) {
+            ref.textContent = 'Сначала заполни предыдущую часть упражнения. Здесь будут показаны именно твои ответы.';
+            ref.classList.add('is-waiting');
+          } else {
+            ref.classList.remove('is-waiting');
+            const values = sourceFor(block.dependsOn);
+            ref.replaceChildren();
+            const heading = document.createElement('strong');
+            heading.textContent = 'Твои ответы из предыдущего упражнения';
+            ref.appendChild(heading);
+            const list = document.createElement('div');
+            list.className = 'a1-prior-grid';
+            values.forEach((value) => { const span = document.createElement('span'); span.textContent = value; list.appendChild(span); });
+            ref.appendChild(list);
+          }
+        }
+      };
+      let dependencyUpdatePending = false;
+      const scheduleDependencies = () => {
+        if (dependencyUpdatePending) return;
+        dependencyUpdatePending = true;
+        queueMicrotask(() => { dependencyUpdatePending = false; applyDependencies(); });
+      };
+      root.addEventListener('input', scheduleDependencies);
+      root.addEventListener('change', scheduleDependencies);
+      new MutationObserver(() => { applyImages(); scheduleDependencies(); }).observe(root, { childList: true, subtree: false });
       fetch(`data/lessons/${encodeURIComponent(lessonId)}.json?embedded-media=1`, { cache: 'no-store' })
         .then((response) => {
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -148,6 +225,7 @@
         .then((data) => {
           lesson = data;
           applyImages();
+          scheduleDependencies();
 
         })
         .catch((error) => console.warn('Lesson images were not loaded.', error));

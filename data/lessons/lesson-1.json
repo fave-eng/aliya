@@ -1,0 +1,882 @@
+{
+  "id": "lesson-1",
+  "number": 1,
+  "status": "available",
+  "title": "Lead-in · Первые слова и фразы",
+  "subtitle": "Speakout A1 · Workbook · Lead-in: international English, numbers, days of the week, classroom language",
+  "vocabularyId": "vocab-lead-in",
+  "grammarIds": [],
+  "publishedAt": "2026-10-19",
+  "notification": {
+    "enabled": true,
+    "version": 1
+  },
+  "totalPoints": 42,
+  "blocks": [
+    {
+      "type": "section",
+      "title": "International English",
+      "eyebrow": "VOCABULARY",
+      "sectionNumber": 1,
+      "text": "Упражнения 1A и 1B"
+    },
+    {
+      "type": "exercise",
+      "id": "wb-1a",
+      "title": "1A · Complete the words with the missing letters.",
+      "instructions": "Complete the words with the missing letters.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "p",
+            "z",
+            "a"
+          ],
+          "answers": [
+            "i",
+            "z"
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "p",
+            "o",
+            "o"
+          ],
+          "answers": [
+            "h",
+            "t"
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "b",
+            ""
+          ],
+          "answers": [
+            "us"
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "r",
+            "st",
+            "ra",
+            "t"
+          ],
+          "answers": [
+            "e",
+            "au",
+            "n"
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "p",
+            "r",
+            ""
+          ],
+          "answers": [
+            "a",
+            "k"
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "gaps",
+          "segments": [
+            "c",
+            "f",
+            "e",
+            ""
+          ],
+          "answers": [
+            "o",
+            "f",
+            "e"
+          ]
+        }
+      ],
+      "inlineNumberedItems": true
+    },
+    {
+      "type": "exercise",
+      "id": "wb-1b",
+      "title": "1B · Match the words with the photos.",
+      "instructions": "Match the words (1–6) in Ex 1A with the photos (A–F).",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "A",
+          "number": "A",
+          "prompt": "",
+          "input": "select",
+          "answer": 3,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-a.png",
+          "imageAlt": "Оригинальная фотография A из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "id": "C",
+          "number": "C",
+          "prompt": "",
+          "input": "select",
+          "answer": 4,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-c.png",
+          "imageAlt": "Оригинальная фотография C из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "id": "E",
+          "number": "E",
+          "prompt": "",
+          "input": "select",
+          "answer": 2,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-e.png",
+          "imageAlt": "Оригинальная фотография E из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "id": "B",
+          "number": "B",
+          "prompt": "",
+          "input": "select",
+          "answer": 1,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-b.png",
+          "imageAlt": "Оригинальная фотография B из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "id": "D",
+          "number": "D",
+          "prompt": "",
+          "input": "select",
+          "answer": 6,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-d.png",
+          "imageAlt": "Оригинальная фотография D из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "id": "F",
+          "number": "F",
+          "prompt": "",
+          "input": "select",
+          "answer": 5,
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "image": "images/lead-in-1b-f.png",
+          "imageAlt": "Оригинальная фотография F из задания 1B",
+          "optionValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      ],
+      "layout": "photo-match",
+      "dependsOn": "wb-1a"
+    },
+    {
+      "type": "section",
+      "title": "Numbers",
+      "eyebrow": "VOCABULARY",
+      "sectionNumber": 2,
+      "text": "Упражнения 2A и 2B"
+    },
+    {
+      "type": "exercise",
+      "id": "wb-2a",
+      "title": "2A · Write a word or number to fill the gaps.",
+      "instructions": "Write a word or number to fill the gaps.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "a",
+          "number": "a",
+          "prompt": "",
+          "input": "text",
+          "answer": "two",
+          "left": "2",
+          "right": null,
+          "side": "right"
+        },
+        {
+          "id": "b",
+          "number": "b",
+          "prompt": "",
+          "input": "text",
+          "answer": "4",
+          "left": null,
+          "right": "four",
+          "side": "left"
+        },
+        {
+          "id": "c",
+          "number": "c",
+          "prompt": "",
+          "input": "text",
+          "answer": "seven",
+          "left": "7",
+          "right": null,
+          "side": "right"
+        },
+        {
+          "id": "d",
+          "number": "d",
+          "prompt": "",
+          "input": "text",
+          "answer": "eight",
+          "left": "8",
+          "right": null,
+          "side": "right"
+        },
+        {
+          "id": "e",
+          "number": "e",
+          "prompt": "",
+          "input": "text",
+          "answer": "10",
+          "left": null,
+          "right": "ten",
+          "side": "left"
+        }
+      ],
+      "layout": "number-table"
+    },
+    {
+      "type": "exercise",
+      "id": "wb-2b",
+      "title": "2B · Listen and write the number that comes next.",
+      "instructions": "Listen and write the number that comes next.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "text",
+          "answer": "nine",
+          "example": true,
+          "exampleAnswer": "nine",
+          "showExampleNumber": true
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "text",
+          "answer": "2",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "text",
+          "answer": "5",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "text",
+          "answer": "10",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "text",
+          "answer": "3",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "text",
+          "answer": "6",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "prompt": "",
+          "input": "text",
+          "answer": "8",
+          "scored": false,
+          "placeholder": ""
+        },
+        {
+          "id": "8",
+          "number": 8,
+          "prompt": "",
+          "input": "text",
+          "answer": "7",
+          "scored": false,
+          "placeholder": ""
+        }
+      ],
+      "audioUnavailable": "L.01"
+    },
+    {
+      "type": "section",
+      "title": "Days of the week",
+      "eyebrow": "VOCABULARY",
+      "sectionNumber": 3,
+      "text": "Упражнения 3A и 3B"
+    },
+    {
+      "type": "exercise",
+      "id": "wb-3a",
+      "title": "3A · Put the letters in the correct order.",
+      "instructions": "Put the letters in the correct order to make days of the week.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "yudanS",
+          "input": "text",
+          "answer": "Sunday"
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "Traydhus",
+          "input": "text",
+          "answer": "Thursday"
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "danMoy",
+          "input": "text",
+          "answer": "Monday"
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "rFaidy",
+          "input": "text",
+          "answer": "Friday"
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "eduTyas",
+          "input": "text",
+          "answer": "Tuesday"
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "aSartduy",
+          "input": "text",
+          "answer": "Saturday"
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "prompt": "snedadWey",
+          "input": "text",
+          "answer": "Wednesday"
+        }
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "wb-3b",
+      "title": "3B · Complete the diary.",
+      "instructions": "Complete the diary with words from Ex 3A.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "text",
+          "answer": "Tuesday"
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "text",
+          "answer": "Wednesday"
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "text",
+          "answer": "Thursday"
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "text",
+          "answer": "Friday"
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "text",
+          "answer": "Saturday"
+        }
+      ],
+      "layout": "diary-table",
+      "dependsOn": "wb-3a"
+    },
+    {
+      "type": "section",
+      "title": "Classroom language",
+      "eyebrow": "VOCABULARY",
+      "sectionNumber": 4,
+      "text": "Упражнения 4A, 4B и 4C"
+    },
+    {
+      "type": "exercise",
+      "id": "wb-4a",
+      "title": "4A · Match the sentence beginnings and endings.",
+      "instructions": "Match the sentence beginnings (1–6) with the endings (a–f).",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "It’s on",
+          "input": "select",
+          "answer": 3,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "Can you",
+          "input": "select",
+          "answer": 5,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "I",
+          "input": "select",
+          "answer": 4,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "What’s otobüs",
+          "input": "select",
+          "answer": 0,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "Thank",
+          "input": "select",
+          "answer": 2,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "I don’t",
+          "input": "select",
+          "answer": 1,
+          "options": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+          ]
+        }
+      ],
+      "wordBankLabel": "",
+      "wordBank": [
+        "a   in English?",
+        "b   know.",
+        "c   you!",
+        "d   page 7.",
+        "e   don’t understand.",
+        "f   repeat that, please?"
+      ]
+    },
+    {
+      "type": "exercise",
+      "id": "wb-4b",
+      "title": "4B · Complete the conversations.",
+      "instructions": "Complete the conversations with words from Ex 4A.",
+      "eyebrow": "Speakout A1 · Lead-in",
+      "hideAnswersOnError": true,
+      "items": [
+        {
+          "id": "1",
+          "number": 1,
+          "prompt": "",
+          "input": "gaps",
+          "answer": "page",
+          "example": true,
+          "exampleAnswer": "page",
+          "segments": [
+            "The activity is on ",
+            " four."
+          ]
+        },
+        {
+          "id": "2",
+          "number": 2,
+          "prompt": "",
+          "input": "gaps",
+          "answer": "repeat",
+          "answers": [
+            "repeat"
+          ],
+          "segments": [
+            "Can you ",
+            " that, please?"
+          ]
+        },
+        {
+          "id": "3",
+          "number": 3,
+          "prompt": "",
+          "input": "gaps",
+          "answer": [
+            "don’t",
+            "don't"
+          ],
+          "answers": [
+            [
+              "don’t",
+              "don't"
+            ]
+          ],
+          "segments": [
+            "I ",
+            " understand."
+          ]
+        },
+        {
+          "id": "4",
+          "number": 4,
+          "prompt": "",
+          "input": "gaps",
+          "answer": "know",
+          "answers": [
+            "know"
+          ],
+          "segments": [
+            "Ah, yes! I ",
+            "."
+          ]
+        },
+        {
+          "id": "5",
+          "number": 5,
+          "prompt": "",
+          "input": "gaps",
+          "answer": "English",
+          "answers": [
+            "English"
+          ],
+          "segments": [
+            "Edu, what’s libro in ",
+            "?"
+          ]
+        },
+        {
+          "id": "6",
+          "number": 6,
+          "prompt": "",
+          "input": "gaps",
+          "answer": [
+            "understand"
+          ],
+          "answers": [
+            [
+              "understand"
+            ]
+          ],
+          "segments": [
+            "I don’t ",
+            "."
+          ]
+        },
+        {
+          "id": "7",
+          "number": 7,
+          "prompt": "",
+          "input": "gaps",
+          "answer": [
+            "what’s",
+            "what's"
+          ],
+          "answers": [
+            [
+              "what’s",
+              "what's"
+            ]
+          ],
+          "segments": [
+            "Simon, ",
+            " libro in English?"
+          ]
+        },
+        {
+          "id": "8",
+          "number": 8,
+          "prompt": "",
+          "input": "gaps",
+          "answer": "thank",
+          "answers": [
+            "thank"
+          ],
+          "segments": [
+            "Ah, ",
+            " you!"
+          ]
+        }
+      ],
+      "layout": "dialogue",
+      "dependsOn": "wb-4a",
+      "dialogueLines": [
+        {
+          "heading": "Conversation 1"
+        },
+        {
+          "speaker": "Teacher",
+          "itemIds": [
+            "1"
+          ]
+        },
+        {
+          "speaker": "Antoni",
+          "itemIds": [
+            "2"
+          ]
+        },
+        {
+          "speaker": "Teacher",
+          "text": "Yes. It’s on page four."
+        },
+        {
+          "speaker": "Antoni",
+          "itemIds": [
+            "3"
+          ]
+        },
+        {
+          "speaker": "Teacher",
+          "text": "Page four in the book. One, two, three, four …"
+        },
+        {
+          "speaker": "Antoni",
+          "itemIds": [
+            "4"
+          ]
+        },
+        {
+          "heading": "Conversation 2"
+        },
+        {
+          "speaker": "Marta",
+          "itemIds": [
+            "5"
+          ]
+        },
+        {
+          "speaker": "Edu",
+          "itemIds": [
+            "6"
+          ]
+        },
+        {
+          "speaker": "Marta",
+          "itemIds": [
+            "7"
+          ]
+        },
+        {
+          "speaker": "Simon",
+          "text": "It’s ‘book’."
+        },
+        {
+          "speaker": "Marta",
+          "itemIds": [
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "4C · Listen and check.",
+      "text": "Listen and check. · L.02. Оригинальная запись пока не предоставлена; аудирование будет доступно после загрузки файла преподавателем."
+    }
+  ]
+}
