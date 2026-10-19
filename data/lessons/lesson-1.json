@@ -127,7 +127,7 @@
       "type": "exercise",
       "id": "wb-1b",
       "title": "1B · Match the words with the photos.",
-      "instructions": "Match the words (1–6) in Ex 1A with the photos (A–F). Нажми на фото, если хочешь открыть его крупнее.",
+      "instructions": "Match the words (1–6) in Ex 1A with the photos (A–F).",
       "eyebrow": "Speakout A1 · Lead-in",
       "hideAnswersOnError": true,
       "items": [
@@ -470,53 +470,52 @@
           "id": "1",
           "number": 1,
           "prompt": "yudanS",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Sunday"
         },
         {
           "id": "2",
           "number": 2,
           "prompt": "Traydhus",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Thursday"
         },
         {
           "id": "3",
           "number": 3,
           "prompt": "danMoy",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Monday"
         },
         {
           "id": "4",
           "number": 4,
           "prompt": "rFaidy",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Friday"
         },
         {
           "id": "5",
           "number": 5,
           "prompt": "eduTyas",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Tuesday"
         },
         {
           "id": "6",
           "number": 6,
           "prompt": "aSartduy",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Saturday"
         },
         {
           "id": "7",
           "number": 7,
           "prompt": "snedadWey",
-          "input": "letter-sort",
+          "input": "text",
           "answer": "Wednesday"
         }
-      ],
-      "layout": "letter-sort"
+      ]
     },
     {
       "type": "exercise",
