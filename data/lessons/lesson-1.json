@@ -11,7 +11,7 @@
     "enabled": true,
     "version": 1
   },
-  "totalPoints": 42,
+  "totalPoints": 49,
   "blocks": [
     {
       "type": "section",
@@ -127,7 +127,7 @@
       "type": "exercise",
       "id": "wb-1b",
       "title": "1B · Match the words with the photos.",
-      "instructions": "Match the words (1–6) in Ex 1A with the photos (A–F).",
+      "instructions": "Match the words (1–6) in Ex 1A with the photos (A–F). Нажми на фото, если хочешь открыть его крупнее.",
       "eyebrow": "Speakout A1 · Lead-in",
       "hideAnswersOnError": true,
       "items": [
@@ -376,8 +376,10 @@
           "number": 2,
           "prompt": "",
           "input": "text",
-          "answer": "2",
-          "scored": false,
+          "answer": [
+            "2",
+            "two"
+          ],
           "placeholder": ""
         },
         {
@@ -385,8 +387,10 @@
           "number": 3,
           "prompt": "",
           "input": "text",
-          "answer": "5",
-          "scored": false,
+          "answer": [
+            "5",
+            "five"
+          ],
           "placeholder": ""
         },
         {
@@ -394,8 +398,10 @@
           "number": 4,
           "prompt": "",
           "input": "text",
-          "answer": "10",
-          "scored": false,
+          "answer": [
+            "10",
+            "ten"
+          ],
           "placeholder": ""
         },
         {
@@ -403,8 +409,10 @@
           "number": 5,
           "prompt": "",
           "input": "text",
-          "answer": "3",
-          "scored": false,
+          "answer": [
+            "3",
+            "three"
+          ],
           "placeholder": ""
         },
         {
@@ -412,8 +420,10 @@
           "number": 6,
           "prompt": "",
           "input": "text",
-          "answer": "6",
-          "scored": false,
+          "answer": [
+            "6",
+            "six"
+          ],
           "placeholder": ""
         },
         {
@@ -421,8 +431,10 @@
           "number": 7,
           "prompt": "",
           "input": "text",
-          "answer": "8",
-          "scored": false,
+          "answer": [
+            "8",
+            "eight"
+          ],
           "placeholder": ""
         },
         {
@@ -430,12 +442,14 @@
           "number": 8,
           "prompt": "",
           "input": "text",
-          "answer": "7",
-          "scored": false,
+          "answer": [
+            "7",
+            "seven"
+          ],
           "placeholder": ""
         }
       ],
-      "audioUnavailable": "L.01"
+      "audio": "audio/SO3_A1_WB_1A_Audio_1_01.mp3"
     },
     {
       "type": "section",
@@ -456,52 +470,53 @@
           "id": "1",
           "number": 1,
           "prompt": "yudanS",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Sunday"
         },
         {
           "id": "2",
           "number": 2,
           "prompt": "Traydhus",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Thursday"
         },
         {
           "id": "3",
           "number": 3,
           "prompt": "danMoy",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Monday"
         },
         {
           "id": "4",
           "number": 4,
           "prompt": "rFaidy",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Friday"
         },
         {
           "id": "5",
           "number": 5,
           "prompt": "eduTyas",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Tuesday"
         },
         {
           "id": "6",
           "number": 6,
           "prompt": "aSartduy",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Saturday"
         },
         {
           "id": "7",
           "number": 7,
           "prompt": "snedadWey",
-          "input": "text",
+          "input": "letter-sort",
           "answer": "Wednesday"
         }
-      ]
+      ],
+      "layout": "letter-sort"
     },
     {
       "type": "exercise",
@@ -874,9 +889,11 @@
       ]
     },
     {
-      "type": "info",
+      "type": "audio",
       "title": "4C · Listen and check.",
-      "text": "Listen and check. · L.02. Оригинальная запись пока не предоставлена; аудирование будет доступно после загрузки файла преподавателем."
+      "text": "Listen and check. · L.02",
+      "audio": "audio/SO3_A1_WB_1A_Audio_1_02.mp3",
+      "response": false
     }
   ]
 }

@@ -3476,3 +3476,135 @@ label.odd-option {
  .exercise-card[data-task="wb-1a"] .exercise-items,
  .exercise-card[data-task="wb-3a"] .exercise-items {grid-template-columns:1fr;}
 }
+
+
+/* Alia HW1 polish: clearer photos, draggable day names, cleaner dialogue layout */
+.exercise-card.exercise-layout-photo-match .exercise-item-media img {
+  min-height: 210px;
+  object-fit: cover;
+  border: 1px solid #d0dae7;
+}
+.exercise-card.exercise-layout-photo-match .exercise-control select { max-width: 100%; }
+.exercise-card.exercise-layout-photo-match .exercise-item-header { align-items: center; }
+
+.a1-letter-sort-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.letter-sort-inline-row {
+  grid-template-columns: 31px minmax(0,1fr);
+}
+.letter-sort-widget {
+  display: grid;
+  gap: 10px;
+}
+.letter-sort-source,
+.letter-sort-answer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.letter-sort-source {
+  padding: 10px;
+  border: 1px solid #dbe5f0;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+.letter-sort-answer-wrap {
+  min-height: 68px;
+  padding: 10px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+}
+.letter-sort-placeholder {
+  color: #64748b;
+  font-size: .9rem;
+}
+.letter-sort-chip,
+.letter-sort-answer-chip {
+  min-width: 42px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #312e81;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.letter-sort-chip:hover,
+.letter-sort-answer-chip:hover {
+  transform: translateY(-1px);
+}
+.letter-sort-chip.is-used {
+  opacity: .38;
+  cursor: not-allowed;
+}
+.letter-sort-answer-chip {
+  background: #ffffff;
+  border-color: #94a3b8;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+}
+.letter-sort-answer-chip.is-dragging {
+  opacity: .45;
+}
+.letter-sort-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dialogue-line {
+  grid-template-columns: minmax(68px, auto) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.dialogue-speaker {
+  width: auto;
+  min-height: 34px;
+  padding: 7px 10px;
+  text-align: center;
+  line-height: 1.2;
+}
+.dialogue-utterance {
+  line-height: 2.1;
+  font-weight: 600;
+}
+.dialogue-gap-input {
+  width: clamp(110px, 16vw, 150px);
+  margin: 0 4px;
+}
+.dialogue-item > .feedback {
+  display: block;
+  margin: 6px 0 0 0;
+  width: fit-content;
+}
+
+.a1-number-row > span[role="cell"] {
+  min-height: 58px;
+}
+.a1-short-field,
+.a1-diary-field {
+  height: 44px;
+}
+
+@media (max-width: 700px) {
+  .a1-letter-sort-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .dialogue-line {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .dialogue-speaker {
+    justify-self: start;
+  }
+  .exercise-card.exercise-layout-photo-match .exercise-item-media img {
+    min-height: 160px;
+  }
+}

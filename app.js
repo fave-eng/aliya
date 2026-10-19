@@ -1346,6 +1346,88 @@
     });
 
 
+    root.querySelectorAll('[data-letter-sort]').forEach((widget) => {
+      const itemNode = widget.closest('[data-exercise-item]');
+      const answer = widget.querySelector('[data-letter-answer]');
+      const sourceButtons = [...widget.querySelectorAll('[data-letter-source]')];
+      let dragging = null;
+
+      const createAnswerChip = (button) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'letter-sort-answer-chip';
+        chip.dataset.answerLetter = 'true';
+        chip.dataset.letter = safeText(button.dataset.letter);
+        chip.dataset.sourceIndex = safeText(button.dataset.sourceIndex);
+        chip.draggable = true;
+        chip.setAttribute('role', 'listitem');
+        chip.setAttribute('aria-label', `Selected letter ${safeText(button.dataset.letter)}`);
+        chip.textContent = safeText(button.dataset.letter);
+        return chip;
+      };
+
+      const releaseChip = (chip) => {
+        const sourceIndex = safeText(chip.dataset.sourceIndex);
+        const source = widget.querySelector(`[data-letter-source][data-source-index="${CSS.escape(sourceIndex)}"]`);
+        if (source) {
+          source.disabled = false;
+          source.classList.remove('is-used');
+        }
+        chip.remove();
+        updateLetterSortValue(itemNode);
+      };
+
+      sourceButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.disabled) return;
+          button.disabled = true;
+          button.classList.add('is-used');
+          answer.appendChild(createAnswerChip(button));
+          updateLetterSortValue(itemNode);
+        });
+      });
+
+      widget.addEventListener('click', (event) => {
+        const chip = event.target.closest('[data-answer-letter]');
+        if (chip) releaseChip(chip);
+      });
+
+      widget.querySelector('[data-letter-undo]')?.addEventListener('click', () => {
+        const chips = answer.querySelectorAll('[data-answer-letter]');
+        const last = chips[chips.length - 1];
+        if (last) releaseChip(last);
+      });
+
+      widget.querySelector('[data-letter-reset]')?.addEventListener('click', () => {
+        [...answer.querySelectorAll('[data-answer-letter]')].forEach((chip) => releaseChip(chip));
+        updateLetterSortValue(itemNode);
+      });
+
+      answer.addEventListener('dragstart', (event) => {
+        const chip = event.target.closest('[data-answer-letter]');
+        if (!chip) return;
+        dragging = chip;
+        chip.classList.add('is-dragging');
+        event.dataTransfer.effectAllowed = 'move';
+      });
+      answer.addEventListener('dragend', (event) => {
+        const chip = event.target.closest('[data-answer-letter]');
+        if (chip) chip.classList.remove('is-dragging');
+        dragging = null;
+        updateLetterSortValue(itemNode);
+      });
+      answer.addEventListener('dragover', (event) => {
+        if (!dragging) return;
+        event.preventDefault();
+        const target = event.target.closest('[data-answer-letter]');
+        if (!target || target === dragging) return;
+        const rect = target.getBoundingClientRect();
+        const after = event.clientX > rect.left + rect.width / 2;
+        answer.insertBefore(dragging, after ? target.nextSibling : target);
+      });
+    });
+
+
     root.querySelectorAll('[data-crossword-grid-workspace]').forEach((workspace) => {
       const activeClue = workspace.querySelector('[data-crossword-active-clue]');
       let activeEntryId = '';
@@ -1492,6 +1574,63 @@
       });
       updateCrosswordHiddenAnswer(workspace);
     });
+  }
+
+
+  function renderLetterSortControl(item, itemId, numberMarkup) {
+    const letters = [...safeText(item.prompt)];
+    const sourceButtons = letters.map((letter, letterIndex) => `<button type="button" class="letter-sort-chip" data-letter-source data-source-index="${letterIndex}" data-letter="${escapeHtml(letter)}" aria-label="Letter ${escapeHtml(letter)}">${escapeHtml(letter)}</button>`).join('');
+    return `<div class="exercise-item" data-exercise-item="${escapeHtml(itemId)}" data-input-type="letter-sort">
+      <div class="exercise-item-inline-row letter-sort-inline-row">${numberMarkup}<div class="exercise-item-inline-content"><div class="letter-sort-widget" data-letter-sort>
+        <div class="letter-sort-source" aria-label="Letters to use">${sourceButtons}</div>
+        <div class="letter-sort-answer-wrap"><div class="letter-sort-answer" data-letter-answer aria-label="Your answer" role="list"></div><div class="letter-sort-placeholder" data-letter-placeholder>Нажимай на буквы и собирай слово</div></div>
+        <input type="hidden" data-letter-sort-value>
+        <div class="letter-sort-actions"><button type="button" class="btn btn-secondary btn-small" data-letter-undo>Удалить последнюю</button><button type="button" class="btn btn-secondary btn-small" data-letter-reset>Очистить</button></div>
+      </div></div></div>
+      <div class="feedback" aria-live="polite"></div>
+    </div>`;
+  }
+
+  function updateLetterSortValue(itemNode) {
+    if (!itemNode) return;
+    const hidden = itemNode.querySelector('[data-letter-sort-value]');
+    const answer = itemNode.querySelector('[data-letter-answer]');
+    const placeholder = itemNode.querySelector('[data-letter-placeholder]');
+    if (!hidden || !answer || !placeholder) return;
+    const value = [...answer.querySelectorAll('[data-answer-letter]')].map((chip) => safeText(chip.dataset.letter)).join('');
+    hidden.value = value;
+    placeholder.hidden = value.length > 0;
+  }
+
+  function setLetterSortAnswer(itemNode, value) {
+    if (!itemNode) return;
+    const answer = itemNode.querySelector('[data-letter-answer]');
+    if (!answer) return;
+    answer.innerHTML = '';
+    const sourceButtons = [...itemNode.querySelectorAll('[data-letter-source]')];
+    sourceButtons.forEach((button) => {
+      button.disabled = false;
+      button.classList.remove('is-used');
+    });
+    const letters = [...safeText(value)];
+    letters.forEach((letter, answerIndex) => {
+      const sourceButton = sourceButtons.find((button) => !button.disabled && safeText(button.dataset.letter) === letter);
+      if (!sourceButton) return;
+      sourceButton.disabled = true;
+      sourceButton.classList.add('is-used');
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'letter-sort-answer-chip';
+      chip.dataset.answerLetter = 'true';
+      chip.dataset.letter = letter;
+      chip.dataset.sourceIndex = safeText(sourceButton.dataset.sourceIndex);
+      chip.draggable = true;
+      chip.setAttribute('role', 'listitem');
+      chip.setAttribute('aria-label', `Selected letter ${letter}`);
+      chip.textContent = letter;
+      answer.appendChild(chip);
+    });
+    updateLetterSortValue(itemNode);
   }
 
   function renderExerciseItem(item, blockId, index, inlineNumberedItems = false) {
@@ -1647,6 +1786,10 @@
     }
 
     let control = '';
+    if (item.input === 'letter-sort') {
+      return renderLetterSortControl(item, itemId, numberMarkup);
+    }
+
     if (item.input === 'example-gap') {
       const segments = Array.isArray(item.segments) ? item.segments : [];
       control = `<div class="sentence-gaps numbered-example-gap"><span>${escapeHtml(segments[0] || '')}</span><span class="inline-example-answer"><b>${escapeHtml(item.exampleNumber || 1)}</b> ${escapeHtml(item.exampleAnswer || '')}</span><span>${escapeHtml(segments[1] || '')}</span><span class="inline-gap-number">${escapeHtml(item.gapNumber || 2)}</span><input class="gap-input" data-example-gap autocomplete="off"><span>${escapeHtml(segments[2] || '')}</span></div>`;
@@ -1822,6 +1965,9 @@
         return `<div class="a1-diary-row exercise-item" role="row" data-exercise-item="${esc(row.item.id)}" data-input-type="text"><span role="cell">${row.number}</span><span role="cell"><input class="text-field a1-diary-field" aria-label="Day ${row.number}" autocomplete="off"></span><span class="feedback" aria-live="polite"></span></div>`;
       }).join('')}</div>`;
     }
+    if (block.layout === 'letter-sort') {
+      return `<div class="exercise-items a1-letter-sort-grid">${items.map((item, itemIndex) => renderExerciseItem(item, blockId, itemIndex, true)).join('')}</div>`;
+    }
     return null;
   }
 
@@ -1978,7 +2124,10 @@
     let actual;
     let correct = false;
 
-    if (inputType === 'example-gap') {
+    if (inputType === 'letter-sort') {
+      actual = itemNode.querySelector('[data-letter-sort-value]')?.value ?? '';
+      correct = textAnswerMatches(item, actual);
+    } else if (inputType === 'example-gap') {
       actual = itemNode.querySelector('[data-example-gap]')?.value ?? '';
       correct = textAnswerMatches(item, actual);
     } else if (inputType === 'r-circle') {
@@ -2128,7 +2277,9 @@
       const itemNode = node.querySelector(`[data-exercise-item="${CSS.escape(itemId)}"]`);
       if (!itemNode) return;
       const inputType = item.input || 'text';
-      if (inputType === 'example-gap') {
+      if (inputType === 'letter-sort') {
+        setLetterSortAnswer(itemNode, safeText(value));
+      } else if (inputType === 'example-gap') {
         const input = itemNode.querySelector('[data-example-gap]');
         if (input) input.value = safeText(value);
       } else if (inputType === 'r-circle') {
