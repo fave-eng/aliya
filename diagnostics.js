@@ -69,7 +69,7 @@
 
   function functionUrl() {
     const base = String(config.supabase?.url || '').replace(/\/+$/, '');
-    return `${base}/functions/v1/notify-telegram`;
+    return `${base}/functions/v1/alia-diagnostics`;
   }
 
   async function invokeDiagnostic(body) {
