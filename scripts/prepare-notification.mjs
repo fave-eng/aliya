@@ -10,6 +10,20 @@ function requiredEnv(name) {
   return value
 }
 
+async function getGitHubIdToken() {
+  const requestUrl = new URL(requiredEnv('ACTIONS_ID_TOKEN_REQUEST_URL'))
+  const requestToken = requiredEnv('ACTIONS_ID_TOKEN_REQUEST_TOKEN')
+  requestUrl.searchParams.set('audience', 'alia-new-materials-v1')
+  const response = await fetch(requestUrl, {
+    headers: { authorization: `Bearer ${requestToken}` },
+  })
+  const result = await response.json().catch(() => null)
+  if (!response.ok || !result?.value || typeof result.value !== 'string') {
+    throw new Error(`GitHub OIDC token unavailable: HTTP ${response.status}`)
+  }
+  return result.value
+}
+
 function loadWindowArray(relativePath, globalName) {
   const absolutePath = path.join(root, relativePath)
   if (!fs.existsSync(absolutePath)) return []
@@ -47,8 +61,9 @@ function isNotifiable(lesson) {
 const siteBaseUrl = requiredEnv('SITE_BASE_URL').replace(/\/+$/, '')
 const studentId = requiredEnv('STUDENT_ID')
 const projectId = requiredEnv('SUPABASE_PROJECT_ID')
-const notifySecret = requiredEnv('NOTIFY_WEBHOOK_SECRET')
+const githubToken = await getGitHubIdToken()
 const selectedLessonId = requiredEnv('LESSON_ID')
+if (studentId !== 'alia') throw new Error('Only Alia materials can be published from this workflow')
 
 const vocabularyData = loadWindowArray('data/vocabulary-data.js', 'VOCABULARY_DATA')
 const grammarData = loadWindowArray('data/grammar-data.js', 'GRAMMAR_DATA')
@@ -58,7 +73,7 @@ if (lessons.length === 0) {
   throw new Error(`Lesson ${selectedLessonId} was not found, status is not available, or notification.enabled is not true`)
 }
 
-const endpoint = process.env.NOTIFY_ENDPOINT?.trim() || `https://${projectId}.supabase.co/functions/v1/notify-telegram`
+const endpoint = process.env.NOTIFY_ENDPOINT?.trim() || `https://${projectId}.supabase.co/functions/v1/alia-new-materials`
 let failures = 0
 
 for (const lesson of lessons) {
@@ -115,7 +130,7 @@ for (const lesson of lessons) {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'x-notify-secret': notifySecret,
+      'authorization': `Bearer ${githubToken}`,
     },
     body: JSON.stringify(payload),
   })
