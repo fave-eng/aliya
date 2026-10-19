@@ -91,7 +91,7 @@
 
   function explainFunctionFailure(result) {
     const message = String(result?.data?.error || result?.data?.message || result?.data?.raw || '').trim();
-    if (result?.status === 404) return 'Edge Function notify-telegram не найдена или не задеплоена.';
+    if (result?.status === 404) return 'Edge Function alia-diagnostics не найдена или не задеплоена.';
     if (result?.status === 401 && /Unauthorized diagnostics request/i.test(message)) {
       const version = result?.data?.diagnosticVersion ? ` Версия функции: ${result.data.diagnosticVersion}.` : '';
       return `Edge Function отвечает, но не принимает публичный ключ из config.js.${version} Проверь подключение общей функции notify-telegram в Supabase.`;
@@ -156,11 +156,11 @@
         const detail = edgeResult.ok
           ? `Функция отвечает, но версия диагностики другая: ${edgeResult.data?.diagnosticVersion || 'не указана'}. Нужен повторный deploy.`
           : explainFunctionFailure(edgeResult);
-        addCheck('4. Supabase Edge Function notify-telegram', 'bad', detail);
+        addCheck('4. Supabase Edge Function alia-diagnostics', 'bad', detail);
         lastReport.errors.push({ stage: 'edge_function', error: detail, response: edgeResult });
       } else {
         lastReport.health = edgeResult.data;
-        addCheck('4. Supabase Edge Function notify-telegram', 'ok', `Задеплоена нужная версия: ${edgeResult.data.diagnosticVersion}.`);
+        addCheck('4. Supabase Edge Function alia-diagnostics', 'ok', `Задеплоена нужная версия: ${edgeResult.data.diagnosticVersion}.`);
 
         const h = edgeResult.data;
         const browserRows = Array.isArray(lastReport.directRows) ? lastReport.directRows.filter((row) => !String(row.lesson_id || '').startsWith('__diagnostic_probe__')).length : 0;
